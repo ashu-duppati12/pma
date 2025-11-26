@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Property</title>
+<style>
+    body { font-family: Arial, sans-serif; background: #f5f6fa; margin:0; padding:0; }
+    h2 { text-align: center; background: #2f3640; color: white; padding: 15px 0; margin: 0; font-size: 24px; }
+    .container { background: white; width: 95%; max-width: 1500px; margin: 20px auto; padding: 25px; border-radius: 10px; box-shadow: 0 0 10px #ccc; }
+    .search-container { text-align: center; margin: 20px 0; }
+    .search-container label { font-weight: bold; margin-right: 10px; }
+    .search-container input[type="text"] { width: 120px; padding: 6px; font-size: 14px; border-radius: 5px; border: 1px solid #aaa; }
+    .search-container button { padding: 6px 12px; background: #273c75; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    .search-container button:hover { background: #40739e; }
+    .owner-details { text-align: center; font-weight: bold; margin-bottom: 20px; }
+    form { width: 100%; }
+    .form-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; margin-bottom: 15px; }
+    .form-row label { font-weight: bold; display: block; margin-bottom: 5px; }
+    .form-row input, .form-row select { width: 80%; padding: 7px; border: 1px solid #ccc; border-radius: 6px; }
+    .photo-section { text-align: center; margin-top: 20px; }
+    .photo-section img { max-width: 200px; height: auto; margin-top: 10px; border-radius: 10px; border: 1px solid #ccc; }
+    .btn-container { text-align: center; margin-top: 20px; }
+    .btn-container button { padding: 10px 20px; background-color: #0097e6; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; }
+    .btn-container button:hover { background-color: #273c75; }
+        .back-link { display:block; margin:20px 0; text-align:center; color:#333; text-decoration:none; font-weight:bold; }
+
+</style>
+</head>
+<body>
+<h2>Add Property</h2>
+<div class="container">
+    <!-- Owner Search -->
+    <div class="search-container">
+        <form method="POST">
+            <label>Enter Owner Code:</label>
+            <input type="text" name="owner_code" placeholder="Ex: O001" required>
+            <button type="submit" name="search_owner">Search</button>
+        </form>
+    </div>
+
+    {% if owner %}
+    <p class="owner-details">
+        Owner: {{ owner.first_name }} {{ owner.last_name }} | Email: {{ owner.email }} | Mobile: {{ owner.mobile_number }}
+    </p>
+
+    <form method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="owner_code" value="{{ owner.owner_code }}">
+
+        <!-- Row 1 -->
+        <div class="form-row">
+            <div><label>Developer Name</label><input type="text" name="developer_name"></div>
+            <div><label>Building Name</label><input type="text" name="building_name"></div>
+            <div><label>Property Type</label><input type="text" name="property_type"></div>
+            <div><label>Property Name</label><input type="text" name="name"></div>
+            <div><label>Address 1</label><input type="text" name="address1"></div>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="form-row">
+            <div><label>Address 2</label><input type="text" name="address2"></div>
+            <div><label>City</label><input type="text" name="city"></div>
+            <div><label>State</label><input type="text" name="state"></div>
+            <div><label>Country</label><input type="text" name="country"></div>
+            <div><label>Zip Code</label><input type="text" name="zip_code"></div>
+        </div>
+
+        <!-- Row 3 -->
+        <div class="form-row">
+            <div><label>Municipality Number</label><input type="text" name="municipality_number"></div>
+            <div><label>Electricity Bill Number</label><input type="text" name="electricity_bill_number"></div>
+            <div><label>Water Bill Number</label><input type="text" name="water_bill_number"></div>
+            <div><label>Ownership Type</label><input type="text" name="ownership_type" maxlength="6"></div>
+            <div><label>Furnishing Status</label><input type="text" name="furnishing_status" maxlength="6"></div>
+        </div>
+
+        <!-- Row 4 -->
+        <div class="form-row">
+            <div><label>Land Area</label><input type="text" name="land_area"></div>
+            <div><label>Carpet Area</label><input type="text" name="carpet_area"></div>
+            <div><label>BuiltUp Area</label><input type="text" name="builtup_area"></div>
+            <div><label>Bedrooms</label><input type="text" name="bedrooms"></div>
+            <div><label>Bathrooms</label><input type="text" name="bathrooms"></div>
+        </div>
+
+        <!-- Row 5 -->
+        <div class="form-row">
+            <div><label>Washrooms</label><input type="text" name="washrooms"></div>
+            <div><label>Facing</label><input type="text" name="facing"></div>
+            <div><label>Car Parkings</label><input type="text" name="car_parkings"></div>
+            <div><label>Servant Rooms</label><input type="text" name="servant_rooms"></div>
+            <div><label>Balconies</label><input type="text" name="balconies"></div>
+        </div>
+
+        <!-- Row 6 -->
+        <div class="form-row">
+            <div><label>Dishwasher (Y/N)</label><input type="text" name="has_dishwasher" maxlength="6"></div>
+            <div><label>Washing Machine (Y/N)</label><input type="text" name="has_washing_machine" maxlength="6"></div>
+            <div><label>Property Value</label><input type="text" name="property_value"></div>
+            <div><label>Year of Construction</label><input type="date" name="year_of_construction"></div>
+            <div><label>Second Owner Code</label><input type="text" name="second_owner_code"></div>
+        </div>
+
+        <!-- Row 7 -->
+        <div class="form-row">
+            <div><label>Expected Rent Value</label><input type="text" name="expected_rent_value"></div>
+            <div><label>Status</label><input type="text" name="status" maxlength="6"></div>
+            <div><label>MTD Income</label><input type="text" name="mtd_income"></div>
+            <div><label>YTD Income</label><input type="text" name="ytd_income"></div>
+            <div><label>MTD Expense</label><input type="text" name="mtd_expense"></div>
+        </div>
+
+        <!-- Row 8 -->
+        <div class="form-row">
+            <div><label>YTD Expense</label><input type="text" name="ytd_expense"></div>
+            <div><label>Purchase Value</label><input type="text" name="purchase_value"></div>
+            <div><label>Construction Cost</label><input type="text" name="construction_cost"></div>
+            <div><label>Renovation Cost</label><input type="text" name="renovation_cost"></div>
+            <div><label>Registration</label><input type="text" name="registration"></div>
+        </div>
+
+        <!-- Row 9 -->
+        <div class="form-row">
+            <div><label>Transfer Fees</label><input type="text" name="transfer_fees"></div>
+            <div><label>Misc Expense</label><input type="text" name="misc_expense"></div>
+            <div><label>Created By</label><input type="text" name="created_by" value="{{ session.user if session.user else 'admin' }}" readonly></div>
+            <div><label>Creation Date</label><input type="date" name="creation_date" value="{{ today }}" readonly></div>
+            <div><label>Property Photo</label><input type="file" name="property_photo"></div>
+        </div>
+
+
+<div class="btn-container">            <button type="submit" name="add_property">Add Property</button>
+        </div>
+    </form>
+    {% endif %}
+
+    <a href="{{ url_for('home') }}" class="back-link">← Go Back Home</a>
+</div>
+</body>
+</html>

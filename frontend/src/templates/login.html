@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PMA | Login</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #6e8efb, #a777e3);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-container {
+      display: flex;
+      background: #fff;
+      border-radius: 12px;
+      width: 900px;
+      height: 550px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Left side */
+    .login-left {
+      flex: 1;
+      padding: 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 30px;
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      background: #6e8efb;
+      border-radius: 8px;
+    }
+
+    .brand-name {
+      font-weight: 600;
+      color: #333;
+      font-size: 18px;
+    }
+
+    h2 {
+      font-size: 32px;
+      color: #222;
+      margin-bottom: 25px;
+    }
+
+    .google-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .google-btn:hover {
+      background: #f5f5f5;
+    }
+
+    .divider {
+      text-align: center;
+      color: #aaa;
+      margin-bottom: 20px;
+      font-size: 13px;
+      position: relative;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      position: absolute;
+      width: 40%;
+      height: 1px;
+      background: #ddd;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .divider::before {
+      left: 0;
+    }
+
+    .divider::after {
+      right: 0;
+    }
+
+    label {
+      font-size: 14px;
+      color: #444;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      outline: none;
+      transition: border 0.3s;
+    }
+
+    input:focus {
+      border-color: #6e8efb;
+    }
+
+    .form-options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      font-size: 13px;
+    }
+
+    .form-options a {
+      text-decoration: none;
+      color: #6e8efb;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #6e8efb;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #5b76f5;
+    }
+
+    .signup {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .signup a {
+      color: #6e8efb;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    /* Right side */
+    .login-right {
+      flex: 1;
+      background: #f8f9ff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 30px;
+    }
+
+    .login-right img {
+      width: 75%;
+      max-width: 320px;
+      margin-bottom: 20px;
+    }
+
+    .login-right h3 {
+      color: #333;
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .login-right p {
+      color: #666;
+      font-size: 14px;
+      width: 80%;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-left">
+      <div class="brand">
+        <div class="brand-logo"></div>
+        <div class="brand-name">PMA</div>
+      </div>
+
+      <h2>Welcome Back</h2>
+
+
+
+<form action="{{ url_for('login') }}" method="POST">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+            <label>Username</label>
+        <input type="text" name="username" placeholder="Enter your username" required>
+
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Enter your password" required>
+
+        <div class="form-options">
+          <label>Keep me logged in</label>
+          <a href="#">Forgot your password?</a>
+        </div>
+
+        <button type="submit">Log In</button>
+      </form>
+
+      <div class="signup">
+        Don’t have an account? <a href="{{ url_for('register') }}">Sign up</a>
+      </div>
+    </div>
+
+    <div class="login-right">
+      <img src="{{ url_for('static', filename='images/login2.jpeg') }}" alt="Illustration">
+      <h3>Welcome to Property Management App</h3>
+      <p>Manage your property and tenants easily from anywhere, anytime. Stay connected and efficient.</p>
+    </div>
+  </div>
+</body>
+</html>

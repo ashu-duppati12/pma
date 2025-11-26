@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Owner Details</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f9f9f9;
+    }
+    .form-label {
+      font-weight: 600;
+    }
+    .form-container {
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div style="background:#d4edda;padding:10px;color:#155724;border-radius:5px;margin-bottom:15px;">
+      {{ messages[0] }}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<body class="container py-5">
+
+  <h2 class="mb-4 text-center">Owner Details Form</h2>
+
+  <form class="form-container row g-3" action="/add" method="POST" enctype="multipart/form-data">
+    
+    <!-- Row 1 -->
+    <div class="col-md-3">
+      <label class="form-label">Title</label>
+      <select class="form-select" name="salutation" required>
+        <option value="">Select...</option>
+        <option>Mr.</option>
+        <option>Mrs.</option>
+        <option>Miss</option>
+        <option>Msrs</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">First Name</label>
+      <input type="text" class="form-control" name="first_name" maxlength="30" required>
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Last Name</label>
+      <input type="text" class="form-control" name="last_name" maxlength="30" required>
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Nationality</label>
+      <input type="text" class="form-control" name="nationality" maxlength="30" required>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="col-md-3">
+      <label class="form-label">Address Line 1</label>
+      <input type="text" class="form-control" name="address1" maxlength="30" required>
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Address Line 2</label>
+      <input type="text" class="form-control" name="address2" maxlength="30">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">City</label>
+      <input type="text" class="form-control" name="city" maxlength="30" required>
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">State</label>
+      <input type="text" class="form-control" name="state" maxlength="30" required>
+    </div>
+
+    <!-- Row 3 -->
+    <div class="col-md-3">
+      <label class="form-label">Country</label>
+      <input type="text" class="form-control" name="country" maxlength="30" required>
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Zip Code</label>
+      <input type="text" class="form-control" name="zip" maxlength="15">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Mobile No.</label>
+      <input type="tel" class="form-control" name="mobile" maxlength="12" pattern="[0-9]{9,12}" required>
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Email</label>
+      <input type="email" class="form-control" name="email" maxlength="50" required>
+    </div>
+
+    <!-- Row 4 -->
+    <div class="col-md-3">
+      <label class="form-label">Passport No.</label>
+      <input type="text" class="form-control" name="passport" maxlength="20">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Emirates ID</label>
+      <input type="text" class="form-control" name="emirates" maxlength="20">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">DOB</label>
+      <input type="date" class="form-control" name="dob">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Visa Expiry</label>
+      <input type="date" class="form-control" name="visa_expiry">
+    </div>
+
+    <!-- Row 5 -->
+    <div class="col-md-3">
+      <label class="form-label">Passport Expiry</label>
+      <input type="date" class="form-control" name="passport_expiry">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Upload Emirates ID</label>
+       <input type="file" class="form-control" name="OwnerEID" accept="image/*" multiple required>
+</div>
+    <div class="col-md-3">
+      <label class="form-label">Upload Passport</label>
+       <input type="file" class="form-control" name="OwnerPassportCopy" accept="image/*" multiple required>
+</div>
+    <div class="col-md-3">
+      <label class="form-label">Upload Visa</label>
+       <input type="file" class="form-control" name="OwnerResVisa" accept="image/*" multiple required>
+</div>
+
+    <!-- Row 6 -->
+
+    <!-- Submit Button -->
+    <div class="text-center mt-4">
+      <button type="submit" class="btn btn-success px-4">Save Owner Details</button>
+    </div>
+  </form>
+
+</body>
+</html>

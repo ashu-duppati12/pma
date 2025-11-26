@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modify Owner</title>
+<style>
+body { font-family: Arial, sans-serif; background: #f0f2f5; margin:0; padding:20px; }
+.container { max-width: 1500px; margin:auto; background:white; padding:20px; border-radius:8px; box-shadow:0 0 10px rgba(0,0,0,0.1); }
+h2 { text-align:center; color:black; margin-bottom:20px; }
+.row { display:flex; flex-wrap:wrap; margin-bottom:15px; }
+.col-md-3 { width:25%; padding:0 10px; box-sizing:border-box; margin-bottom:15px; }
+label { display:block; margin-bottom:5px; font-weight:bold; font-size:0.9rem; }
+input[type=text], input[type=date], input[type=email], input[type=tel], input[type=file] {
+    width:100%; padding:8px; border:1px solid #ccc; border-radius:4px; font-size:0.9rem;
+}
+button { background:#007BFF; color:white; padding:8px 16px; border:none; border-radius:4px; cursor:pointer; font-size:0.85rem; margin-top:10px; }
+button:hover { background:#0056b3; }
+img { display:block; margin-top:5px; max-width:100px; max-height:80px; border:1px solid #ccc; border-radius:4px; }
+.search-section { text-align:center; margin-bottom:20px; }
+input.small-input { width:120px; padding:6px; font-size:0.85rem; margin-right:5px; }
+.message { text-align:center; font-weight:bold; margin-bottom:15px; color:green; }
+</style>
+</head>
+<body>
+<div class="container">
+    <h2>Modify Owner</h2>
+
+    {% if message %}
+        <p class="message">{{ message }}</p>
+    {% endif %}
+
+    <!-- Search Owner -->
+    <form method="POST" action="{{ url_for('modify_owner_page') }}" class="search-section">
+        <label for="owner_code">Enter Owner Code:</label>
+        <input type="text" name="owner_code" id="owner_code" class="small-input" placeholder="Owner Code" required>
+        <button type="submit">Search</button>
+    </form>
+
+    <a href="{{ url_for('home') }}" style="display:block; text-align:center; margin-bottom:20px; color:#333; font-weight:bold; text-decoration:none;">← Go Back Home</a>
+
+    {% if owner_data %}
+    <form method="POST" action="{{ url_for('update_owner') }}" enctype="multipart/form-data">
+        <input type="hidden" name="owner_code" value="{{ owner_data.owner_code }}">
+
+        <div class="row">
+            <div class="col-md-3"><label>Salutation</label><input type="text" name="salutation" value="{{ owner_data.salutation }}"></div>
+            <div class="col-md-3"><label>First Name</label><input type="text" name="first_name" value="{{ owner_data.first_name }}"></div>
+            <div class="col-md-3"><label>Last Name</label><input type="text" name="last_name" value="{{ owner_data.last_name }}"></div>
+            <div class="col-md-3"><label>Nationality</label><input type="text" name="nationality" value="{{ owner_data.nationality }}"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3"><label>Address 1</label><input type="text" name="address1" value="{{ owner_data.address1 }}"></div>
+            <div class="col-md-3"><label>Address 2</label><input type="text" name="address2" value="{{ owner_data.address2 }}"></div>
+            <div class="col-md-3"><label>City</label><input type="text" name="city" value="{{ owner_data.city }}"></div>
+            <div class="col-md-3"><label>State</label><input type="text" name="state" value="{{ owner_data.state }}"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3"><label>Country</label><input type="text" name="country" value="{{ owner_data.country }}"></div>
+            <div class="col-md-3"><label>Zip Code</label><input type="text" name="zip_code" value="{{ owner_data.zip_code }}"></div>
+            <div class="col-md-3"><label>Mobile Number</label><input type="tel" name="mobile_number" value="{{ owner_data.mobile_number }}"></div>
+            <div class="col-md-3"><label>Email</label><input type="email" name="email" value="{{ owner_data.email }}"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3"><label>Passport Number</label><input type="text" name="passport_number" value="{{ owner_data.passport_number }}"></div>
+            <div class="col-md-3"><label>Emirates ID</label><input type="text" name="emirates_id" value="{{ owner_data.emirates_id }}"></div>
+            <div class="col-md-3"><label>Date of Birth</label><input type="date" name="date_of_birth" value="{{ owner_data.date_of_birth }}"></div>
+            <div class="col-md-3"><label>Visa Expiry</label><input type="date" name="visa_expiry_date" value="{{ owner_data.visa_expiry_date }}"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3"><label>Passport Expiry</label><input type="date" name="passport_expiry_date" value="{{ owner_data.passport_expiry_date }}"></div>
+            <div class="col-md-3"><label>Emirates ID File</label><input type="file" name="OwnerEID">{% if owner_data.eid_image %}<img src="{{ url_for('owner_image', owner_id=owner_data.owner_code, file_type='eid') }}">{% endif %}</div>
+            <div class="col-md-3"><label>Passport Copy File</label><input type="file" name="OwnerPassportCopy">{% if owner_data.passport_copy %}<img src="{{ url_for('owner_image', owner_id=owner_data.owner_code, file_type='passport') }}">{% endif %}</div>
+            <div class="col-md-3"><label>Residence Visa File</label><input type="file" name="OwnerResVisa">{% if owner_data.res_visa %}<img src="{{ url_for('owner_image', owner_id=owner_data.owner_code, file_type='visa') }}">{% endif %}</div>
+        </div>
+
+        <div style="text-align:center;">
+            <button type="submit">Update Owner</button>
+        </div>
+    </form>
+    {% endif %}
+</div>
+</body>
+</html>

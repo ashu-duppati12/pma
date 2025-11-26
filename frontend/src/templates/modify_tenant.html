@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modify Tenant</title>
+<style>
+body { font-family: Arial, sans-serif; background: #f5f6fa; margin:0; padding:0; }
+h2 { text-align: center; background: #2f3640; color: white; padding: 15px 0; margin: 0; font-size: 24px; }
+.container { width: 95%; max-width: 1500px; margin: 20px auto; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 0 10px #ccc; }
+.search-container { text-align: center; margin-bottom: 20px; }
+.search-container label { font-weight: bold; margin-right: 10px; }
+.search-container input { width: 150px; padding: 6px; border-radius: 5px; border: 1px solid #aaa; }
+.search-container button { padding: 6px 12px; background: #273c75; color: white; border: none; border-radius: 5px; cursor: pointer; }
+.search-container button:hover { background: #40739e; }
+form { width: 100%; }
+.form-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; margin-bottom: 15px; }
+.form-row label { font-weight: bold; display: block; margin-bottom: 5px; }
+.form-row input, .form-row select { width: 100%; padding: 7px; border: 1px solid #ccc; border-radius: 6px; }
+.photo-section { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; margin-top: 20px; text-align: center; }
+.photo-section img { width: 60px; height: 60px; object-fit: cover; border-radius: 4px; border: 1px solid #ccc; }
+.btn-container { text-align: center; margin-top: 20px; }
+.btn-container button { padding: 10px 20px; background-color: #0097e6; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; }
+.btn-container button:hover { background-color: #273c75; }
+.back-link { display:block; margin:20px 0; text-align:center; color:#333; text-decoration:none; font-weight:bold; }
+</style>
+</head>
+<body>
+
+<h2>Modify Tenant</h2>
+<div class="container">
+
+<!-- Search Tenancy Contract -->
+<div class="search-container">
+    <form method="POST">
+        <label>Enter Tenant ID:</label>
+        <input type="text" name="tenancyContractNumber" placeholder="Ex: 1" required>
+        <button type="submit" name="search">Search</button>
+    </form>
+</div>
+
+{% if tenant %}
+<form method="POST" enctype="multipart/form-data">
+    <!-- Contract Info -->
+    <div class="form-row">
+        <div><label>Tenancy ID</label><input type="text" name="tenancy_contract_number" value="{{ tenant.TenancyContractNumber }}" readonly></div>
+        <div><label>Tenant Name</label><input type="text" name="tenant_name" value="{{ tenant.TenantName }}"></div>
+        <div><label>Date of Birth</label><input type="date" name="tenant_dob" value="{{ tenant.TenantDOB }}"></div>
+        <div><label>Nationality</label><input type="text" name="tenant_nationality" value="{{ tenant.TenantNationality }}"></div>
+        <div><label>Passport Number</label><input type="text" name="tenant_passport" value="{{ tenant.TenantPassportNumber }}"></div>
+    </div>
+
+    <div class="form-row">
+        <div><label>Emirates ID</label><input type="text" name="tenant_eid" value="{{ tenant.TenantEmiratesID }}"></div>
+        <div><label>Passport Expiry</label><input type="date" name="passport_expiry" value="{{ tenant.TenantPassportExpiryDate }}"></div>
+        <div><label>EID Expiry</label><input type="date" name="eid_expiry" value="{{ tenant.TenantEIDExpiryDate }}"></div>
+        <div><label>Employer</label><input type="text" name="tenant_employer" value="{{ tenant.TenantEmployer }}"></div>
+        <div><label>Mobile</label><input type="text" name="tenant_mobile" value="{{ tenant.TenantMobileNumber }}"></div>
+    </div>
+
+    <div class="form-row">
+        <div><label>Email</label><input type="email" name="tenant_email" value="{{ tenant.TenantEmailID }}"></div>
+        <div><label>Lease Start</label><input type="date" name="lease_start" value="{{ tenant.LeaseStartDate }}"></div>
+        <div><label>Lease End</label><input type="date" name="lease_end" value="{{ tenant.LeaseEndDate }}"></div>
+        <div><label>Move In</label><input type="date" name="move_in" value="{{ tenant.MoveInDate }}"></div>
+        <div><label>Move Out</label><input type="date" name="move_out" value="{{ tenant.MoveOutDate }}"></div>
+    </div>
+
+    <div class="form-row">
+        <div><label>Rent Amount</label><input type="text" name="rent_amount" value="{{ tenant.RentAmount }}"></div>
+        <div><label>Deposit Amount</label><input type="text" name="deposit_amount" value="{{ tenant.DepositAmountReceived }}"></div>
+        <div><label>No. Payments</label><input type="text" name="number_of_payments" value="{{ tenant.NumberOfPayments }}"></div>
+        <div><label>Rent Received</label><input type="text" name="rent_received" value="{{ tenant.RentAmountReceived }}" readonly></div>
+        <div><label>Rent Outstanding</label><input type="text" name="rent_outstanding" value="{{ tenant.RentAmountOutstanding }}" readonly></div>
+    </div>
+
+    <div class="form-row">
+        <div><label>Created By</label><input type="text" name="created_by" value="{{ tenant.CreatedBy }}"></div>
+        <div><label>Creation Date</label><input type="date" name="creation_date" value="{{ tenant.CreationDate }}"></div>
+    </div>
+
+    <!-- Photo Section -->
+    <div class="photo-section">
+        {% for field in ["PassportCopyPath","EIDCopyPath","ResidenceVisaCopyPath","BankStatementCopyPath","DepositChequeCopyPath","SecurityChequeCopyPath","EjariMunicipalRegistrationCopyPath"] %}
+        <div>
+            <label>{{ field }}</label>
+            {% if tenant[field] %}
+                <img src="data:image/jpeg;base64,{{ tenant[field] }}">
+            {% else %}
+                <p>N/A</p>
+            {% endif %}
+            <input type="file" name="{{ field }}">
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="btn-container">
+        <button type="submit" name="update_tenant">Update Tenant</button>
+    </div>
+</form>
+{% endif %}
+
+<a href="{{ url_for('home') }}" class="back-link">← Go Back Home</a>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <script>
+      {% for category, message in messages %}
+        alert("{{ message }}");
+      {% endfor %}
+    </script>
+  {% endif %}
+{% endwith %}
+
+</div>
+</body>
+</html>

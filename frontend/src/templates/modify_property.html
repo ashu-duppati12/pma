@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modify Property</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f5f6fa;
+        margin: 0;
+        padding: 0;
+    }
+
+    h2 {
+        text-align: center;
+        background: #2f3640;
+        color: white;
+        padding: 15px 0;
+        margin: 0;
+        font-size: 24px;
+    }
+
+    .search-container {
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    .search-container label {
+        font-weight: bold;
+        margin-right: 10px;
+    }
+
+    .search-container input[type="text"] {
+        width: 120px;
+        padding: 6px;
+        font-size: 14px;
+        border-radius: 5px;
+        border: 1px solid #aaa;
+    }
+
+    .search-container button {
+        padding: 6px 12px;
+        background: #273c75;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .search-container button:hover {
+        background: #40739e;
+    }
+
+    form {
+        background: white;
+        width: 90%;
+        max-width: 1500px;
+        margin: 0 auto 30px;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px #ccc;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+
+    .form-row label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .form-row input, 
+    .form-row select, 
+    .form-row textarea {
+        width: 80%;
+        padding: 7px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+    }
+
+    .photo-section {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .photo-section img {
+        max-width: 200px;
+        height: auto;
+        margin-top: 10px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+    }
+
+    .btn-container {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .btn-container input[type="submit"] {
+        padding: 10px 20px;
+        background-color: #0097e6;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .btn-container input[type="submit"]:hover {
+        background-color: #273c75;
+    }
+.back-link { display:block; margin:20px 0; text-align:center; color:#333; text-decoration:none; font-weight:bold; }
+
+</style>
+</head>
+<body>
+    <h2>Modify Property</h2>
+
+    <div class="search-container">
+        <form method="POST" action="/modify_property">
+            <label>Enter Property Code:</label>
+            <input type="text" name="search_property_code" placeholder="Ex: P001" required>
+            <button type="submit" name="search">Search</button>
+        </form>
+    </div>
+
+    {% if property %}
+    <form method="POST" enctype="multipart/form-data">
+        <div class="form-row">
+            <div>
+                <label>Property Code</label>
+                <input type="text" name="property_code" value="{{ property.property_code }}" readonly>
+            </div>
+            <div>
+                <label>Primary Owner Code</label>
+                <input type="text" name="primary_owner_code" value="{{ property.primary_owner_code }}">
+            </div>
+            <div>
+                <label>Developer Name</label>
+                <input type="text" name="developer_name" value="{{ property.developer_name }}">
+            </div>
+            <div>
+                <label>Building Name</label>
+                <input type="text" name="building_name" value="{{ property.building_name }}">
+            </div>
+            <div>
+                <label>Property Type</label>
+                <input type="text" name="property_type" value="{{ property.property_type }}">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div>
+                <label>Name</label>
+                <input type="text" name="name" value="{{ property.name }}">
+            </div>
+            <div>
+                <label>Address Line 1</label>
+                <input type="text" name="address1" value="{{ property.address1 }}">
+            </div>
+            <div>
+                <label>Address Line 2</label>
+                <input type="text" name="address2" value="{{ property.address2 }}">
+            </div>
+            <div>
+                <label>City</label>
+                <input type="text" name="city" value="{{ property.city }}">
+            </div>
+            <div>
+                <label>State</label>
+                <input type="text" name="state" value="{{ property.state }}">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div>
+                <label>Country</label>
+                <input type="text" name="country" value="{{ property.country }}">
+            </div>
+            <div>
+                <label>Zip Code</label>
+                <input type="text" name="zip_code" value="{{ property.zip_code }}">
+            </div>
+            <div>
+                <label>Municipality Number</label>
+                <input type="text" name="municipality_number" value="{{ property.municipality_number }}">
+            </div>
+            <div>
+                <label>Electricity Bill Number</label>
+                <input type="text" name="electricity_bill_number" value="{{ property.electricity_bill_number }}">
+            </div>
+            <div>
+                <label>Water Bill Number</label>
+                <input type="text" name="water_bill_number" value="{{ property.water_bill_number }}">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div>
+                <label>Ownership Type</label>
+                <input type="text" name="ownership_type" value="{{ property.ownership_type }}">
+            </div>
+            <div>
+                <label>Furnishing Status</label>
+                <input type="text" name="furnishing_status" value="{{ property.furnishing_status }}">
+            </div>
+            <div>
+                <label>Land Area</label>
+                <input type="text" name="land_area" value="{{ property.land_area }}">
+            </div>
+            <div>
+                <label>Carpet Area</label>
+                <input type="text" name="carpet_area" value="{{ property.carpet_area }}">
+            </div>
+            <div>
+                <label>Built-up Area</label>
+                <input type="text" name="builtup_area" value="{{ property.builtup_area }}">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div>
+                <label>Bedrooms</label>
+                <input type="number" name="bedrooms" value="{{ property.bedrooms }}">
+            </div>
+            <div>
+                <label>Bathrooms</label>
+                <input type="number" name="bathrooms" value="{{ property.bathrooms }}">
+            </div>
+            <div>
+                <label>Washrooms</label>
+                <input type="number" name="washrooms" value="{{ property.washrooms }}">
+            </div>
+            <div>
+                <label>Facing</label>
+                <input type="text" name="facing" value="{{ property.facing }}">
+            </div>
+            <div>
+                <label>Car Parkings</label>
+                <input type="number" name="car_parkings" value="{{ property.car_parkings }}">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div>
+                <label>Servant Rooms</label>
+                <input type="number" name="servant_rooms" value="{{ property.servant_rooms }}">
+            </div>
+            <div>
+                <label>Balconies</label>
+                <input type="number" name="balconies" value="{{ property.balconies }}">
+            </div>
+            <div>
+                <label>Has Dishwasher</label>
+                <input type="text" name="has_dishwasher" value="{{ property.has_dishwasher }}">
+            </div>
+            <div>
+                <label>Has Washing Machine</label>
+                <input type="text" name="has_washing_machine" value="{{ property.has_washing_machine }}">
+            </div>
+            <div>
+                <label>Property Value</label>
+                <input type="text" name="property_value" value="{{ property.property_value }}">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div>
+                <label>Year of Construction</label>
+                <input type="date" name="year_of_construction" value="{{ property.year_of_construction }}">
+            </div>
+            <div>
+                <label>Expected Rent Value</label>
+                <input type="text" name="expected_rent_value" value="{{ property.expected_rent_value }}">
+            </div>
+            <div>
+                <label>Status</label>
+                <input type="text" name="status" value="{{ property.status }}">
+            </div>
+            <div>
+                <label>Created By</label>
+                <input type="text" name="created_by" value="{{ property.created_by }}">
+            </div>
+            <div>
+                <label>Creation Date</label>
+                <input type="date" name="creation_date" value="{{ property.creation_date }}">
+            </div>
+        </div>
+
+        <div class="photo-section">
+            <label>Property Photo:</label><br>
+            {% if property.property_photo %}
+                <img src="data:image/jpeg;base64,{{ property.property_photo }}" alt="Property Photo">
+            {% else %}
+                <p>No photo available</p>
+            {% endif %}
+            <br><br>
+            <input type="file" name="property_photo">
+        </div>
+
+        <div class="btn-container">
+            <input type="submit" value="Update Property">
+        </div>
+    </form>
+    {% endif %}
+            <a href="{{ url_for('home') }}" class="back-link">← Go Back Home</a>
+
+</body>
+</html>

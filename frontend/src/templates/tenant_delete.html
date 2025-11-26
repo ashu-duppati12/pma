@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Delete Tenant</title>
+<style>
+body { font-family: Arial, sans-serif; background: #f5f6fa; margin:0; padding:0; }
+h2 { text-align: center; background: #2f3640; color: white; padding: 15px 0; margin: 0; font-size: 24px; }
+.container { background: white; width: 95%; max-width: 1500px; margin: 20px auto; padding: 25px; border-radius: 10px; box-shadow: 0 0 10px #ccc; }
+.search-container { text-align: center; margin: 20px 0; }
+.search-container input[type="text"] { width: 120px; padding: 6px; font-size: 14px; border-radius: 5px; border: 1px solid #aaa; }
+.search-container button { padding: 6px 12px; background: #273c75; color: white; border: none; border-radius: 5px; cursor: pointer; }
+.search-container button:hover { background: #40739e; }
+form { width: 100%; }
+.form-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; margin-bottom: 15px; }
+.form-row label { font-weight: bold; display: block; margin-bottom: 5px; }
+.form-row input, .form-row select { width: 80%; padding: 7px; border: 1px solid #ccc; border-radius: 6px; }
+.photo-section { text-align: center; margin-top: 20px; }
+.photo-section img { width: 60px; height: 60px; margin-top: 10px; border-radius: 6px; border: 1px solid #ccc; }
+.btn-container { text-align: center; margin-top: 20px; }
+.btn-container button { padding: 10px 20px; background-color: #e84118; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; }
+.btn-container button:hover { background-color: #c23616; }
+.back-link { display:block; margin:20px 0; text-align:center; color:#333; text-decoration:none; font-weight:bold; }
+</style>
+</head>
+<body>
+<h2>Delete Tenant</h2>
+<div class="container">
+
+    <!-- Search Tenant -->
+    <div class="search-container">
+        <form method="POST">
+            <label>Enter Tenant Contract Number:</label>
+            <input type="text" name="tenancyContractNumber" placeholder="Ex: TC001" required>
+            <button type="submit" name="search">Search</button>
+        </form>
+    </div>
+
+    {% if tenant %}
+    <form method="POST">
+        <input type="hidden" name="tenancyContractNumber" value="{{ tenant.TenancyContractNumber }}">
+
+        <!-- Row 1 -->
+        <div class="form-row">
+            <div><label>Tenancy Contract Number</label><input type="text" value="{{ tenant.TenancyContractNumber }}" readonly></div>
+            <div><label>Tenant Name</label><input type="text" value="{{ tenant.TenantName }}" readonly></div>
+            <div><label>Date of Birth</label><input type="date" value="{{ tenant.TenantDOB }}" readonly></div>
+            <div><label>Nationality</label><input type="text" value="{{ tenant.TenantNationality }}" readonly></div>
+            <div><label>Passport Number</label><input type="text" value="{{ tenant.TenantPassportNumber }}" readonly></div>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="form-row">
+            <div><label>Emirates ID</label><input type="text" value="{{ tenant.TenantEmiratesID }}" readonly></div>
+            <div><label>Passport Expiry</label><input type="date" value="{{ tenant.TenantPassportExpiryDate }}" readonly></div>
+            <div><label>EID Expiry</label><input type="date" value="{{ tenant.TenantEIDExpiryDate }}" readonly></div>
+            <div><label>Employer</label><input type="text" value="{{ tenant.TenantEmployer }}" readonly></div>
+            <div><label>Mobile Number</label><input type="text" value="{{ tenant.TenantMobileNumber }}" readonly></div>
+        </div>
+
+        <!-- Row 3 -->
+        <div class="form-row">
+            <div><label>Email ID</label><input type="text" value="{{ tenant.TenantEmailID }}" readonly></div>
+            <div><label>Lease Start Date</label><input type="date" value="{{ tenant.LeaseStartDate }}" readonly></div>
+            <div><label>Lease End Date</label><input type="date" value="{{ tenant.LeaseEndDate }}" readonly></div>
+            <div><label>Move In Date</label><input type="date" value="{{ tenant.MoveInDate }}" readonly></div>
+            <div><label>Move Out Date</label><input type="date" value="{{ tenant.MoveOutDate }}" readonly></div>
+        </div>
+
+        <!-- Row 4 -->
+        <div class="form-row">
+            <div><label>Rent Amount</label><input type="text" value="{{ tenant.RentAmount }}" readonly></div>
+            <div><label>Deposit Received</label><input type="text" value="{{ tenant.DepositAmountReceived }}" readonly></div>
+            <div><label>Number of Payments</label><input type="text" value="{{ tenant.NumberOfPayments }}" readonly></div>
+            <div><label>Rent Received</label><input type="text" value="{{ tenant.RentAmountReceived }}" readonly></div>
+            <div><label>Rent Outstanding</label><input type="text" value="{{ tenant.RentAmountOutstanding }}" readonly></div>
+        </div>
+
+        <!-- Row 5: Photos -->
+        <div class="form-row photo-section">
+            {% for field in ["PassportCopyPath","EIDCopyPath","ResidenceVisaCopyPath","BankStatementCopyPath","DepositChequeCopyPath","SecurityChequeCopyPath","EjariMunicipalRegistrationCopyPath"] %}
+            <div>
+                <label>{{ field }}</label><br>
+                {% if tenant[field] %}
+                    <img src="data:image/jpeg;base64,{{ tenant[field] }}">
+                {% else %}
+                    <p>No file</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="btn-container">
+            <button type="submit" name="delete_tenant" onclick="return confirm('Are you sure you want to delete this tenant?');">Delete Tenant</button>
+        </div>
+    </form>
+    {% endif %}
+
+    <a href="{{ url_for('home') }}" class="back-link">← Go Back Home</a>
+
+</div>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <script>
+      {% for category, message in messages %}
+        alert("{{ message }}");
+      {% endfor %}
+    </script>
+  {% endif %}
+{% endwith %}
+</body>
+</html>

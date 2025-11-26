@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Tenant</title>
+<style>
+    body { font-family: Arial, sans-serif; background: #f5f6fa; margin:0; padding:0; }
+    h2 { text-align: center; background: #2f3640; color: white; padding: 15px 0; margin: 0; font-size: 24px; }
+    .container { background: white; width: 95%; max-width: 1500px; margin: 20px auto; padding: 25px; border-radius: 10px; box-shadow: 0 0 10px #ccc; }
+    form { width: 100%; }
+    .form-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; margin-bottom: 15px; }
+    .form-row label { font-weight: bold; display: block; margin-bottom: 5px;  letter-spacing: 0.5px;}
+    .form-row input, .form-row select { width: 90%; padding: 7px; border: 1px solid #ccc; border-radius: 6px; }
+    .btn-container { text-align: center; margin-top: 20px; }
+    .btn-container button { padding: 10px 20px; background-color: #0097e6; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; }
+    .btn-container button:hover { background-color: #273c75; }
+    .back-link { display:block; margin:20px 0; text-align:center; color:#333; text-decoration:none; font-weight:bold; }
+.form-row div {
+    margin-bottom: 10px;}
+</style>
+</head>
+<body>
+<h2>Add Tenant</h2>
+<div class="container">
+
+    <form method="POST" enctype="multipart/form-data">
+
+        <!-- Row 1 -->
+        <div class="form-row">
+            <div><label>Tenant Name</label><input type="text" name="tenant_name" required></div>
+            <div><label>Date of Birth</label><input type="date" name="tenant_dob"></div>
+            <div><label>Nationality</label><input type="text" name="tenant_nationality"></div>
+            <div><label>Passport Number</label><input type="text" name="tenant_passport_number"></div>
+            <div><label>Emirates ID</label><input type="text" name="tenant_emirates_id"></div>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="form-row">
+            <div><label>Passport Expiry</label><input type="date" name="tenant_passport_expiry"></div>
+            <div><label>EID Expiry</label><input type="date" name="tenant_eid_expiry"></div>
+            <div><label>Employer</label><input type="text" name="tenant_employer"></div>
+            <div><label>Mobile Number</label><input type="text" name="tenant_mobile"></div>
+            <div><label>Email ID</label><input type="email" name="tenant_email"></div>
+        </div>
+
+        <!-- Row 3 -->
+        <div class="form-row">
+            <div><label>Lease Start Date</label><input type="date" name="lease_start"></div>
+            <div><label>Lease End Date</label><input type="date" name="lease_end"></div>
+            <div><label>Move In Date</label><input type="date" name="move_in"></div>
+            <div><label>Move Out Date</label><input type="date" name="move_out"></div>
+            <div><label>Rent Amount</label><input type="number" name="rent_amount" step="0.01"></div>
+        </div>
+
+        <!-- Row 4 -->
+        <div class="form-row">
+            <div><label>Deposit Received</label><input type="number" name="deposit_amount" step="0.01"></div>
+            <div><label>Number of Payments</label><input type="number" name="number_of_payments" min="1" max="12"></div>
+            <div><label>Created By</label><input type="text" name="created_by" value="{{ session.user if session.user else 'admin' }}" readonly></div>
+            <div><label>Creation Date</label><input type="date" name="creation_date" value="{{ today }}" readonly></div>
+        </div>
+
+        <!-- Row 5: File Uploads -->
+        <div class="form-row">
+            <div><label>Passport Copy</label><input type="file" name="passportcopypath"></div>
+            <div><label>EID Copy</label><input type="file" name="eidcopypath"></div>
+            <div><label>Residence Visa</label><input type="file" name="residencevisacopypath"></div>
+            <div><label>Bank Statement</label><input type="file" name="bankstatementcopypath"></div>
+            <div><label>Deposit Cheque</label><input type="file" name="depositchequecopypath"></div>
+        </div>
+
+        <!-- Row 6: File Uploads -->
+        <div class="form-row">
+            <div><label>Security Cheque</label><input type="file" name="securitychequecopypath"></div>
+            <div><label>Ejari/Registration</label><input type="file" name="ejarimunicipalregistrationcopypath"></div>
+        </div>
+
+        <div class="btn-container">
+            <button type="submit" name="add_tenant">Add Tenant</button>
+        </div>
+    </form>
+
+    <a href="{{ url_for('home') }}" class="back-link">← Go Back Home</a>
+</div>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <script>
+      {% for category, message in messages %}
+        alert("{{ message }}");
+      {% endfor %}
+    </script>
+  {% endif %}
+{% endwith %}
+</body>
+</html>

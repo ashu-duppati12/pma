@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>List Properties</title>
+<style>
+    body { font-family: Arial, sans-serif; background: #f5f6fa; margin:0; padding:0; }
+    h2 { text-align: center; background: #2f3640; color: white; padding: 15px 0; margin: 0; font-size: 24px; }
+
+    .table-container { width: 95%; margin: 20px auto; overflow-x: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px #ccc; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 8px 10px; border: 1px solid #ccc; text-align: left; }
+    th { background-color: #2f3640; color: white; font-weight: bold; position: sticky; top: 0; cursor: pointer; }
+    tr:nth-child(even) { background-color: #f0f0f0; }
+
+    .photo-img { max-width: 30px; max-height: 30px; border-radius: 6px; border: 1px solid #ccc; }
+
+    @media (max-width: 768px) {
+        th, td { font-size: 12px; padding: 6px 8px; }
+        .photo-img { max-width: 70px; max-height: 50px; }
+    }
+
+    .header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; flex-wrap: wrap; }
+    .header-left { display: flex; gap: 10px; font-weight: bold; }
+    .header-right { font-weight: bold; }
+    .header-right .back-link { text-decoration: none; color: #333; }
+    .header-row h2 { margin: 0 auto; text-align: center; color: black; }
+    .back-link:hover { text-decoration:underline; }
+</style>
+</head>
+<body>
+<h2>All Properties</h2>
+<div class="container">
+    <div class="header-row">
+        <div class="header-left">
+            <span>{{ current_date }}</span> | 
+            <span>Total Properties: {{ properties|length }}</span>
+        </div>
+        <div class="header-right back-link">
+            <a href="{{ url_for('home') }}">← Go Back Home</a>
+        </div>
+    </div>
+
+<div class="table-container">
+    <table id="propertyTable">
+        <thead>
+            <tr>
+                {% for col in ["Property Code","Primary Owner","Developer Name","Building Name","Property Type","Name","Address 1","Address 2","City","State","Country","Zip Code","Municipality No","Electricity Bill No","Water Bill No","Ownership Type","Furnishing Status","Land Area","Carpet Area","Built-up Area","Bedrooms","Bathrooms","Washrooms","Facing","Car Parkings","Servant Rooms","Balconies","Has Dishwasher","Has Washing Machine","Property Value","Year of Construction","Second Owner","Expected Rent Value","Status","MTD Income","YTD Income","MTD Expense","YTD Expense","Purchase Value","Construction Cost","Renovation Cost","Registration","Transfer Fees","Misc Expense","Created By","Creation Date","Photo"] %}
+                <th class="sortable" onclick="sortTable({{ loop.index0 }})">{{ col }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for property in properties %}
+            <tr>
+                <td>{{ property.property_code }}</td>
+                <td>{{ property.primary_owner_code }}</td>
+                <td>{{ property.developer_name }}</td>
+                <td>{{ property.building_name }}</td>
+                <td>{{ property.property_type }}</td>
+                <td>{{ property.name }}</td>
+                <td>{{ property.address1 }}</td>
+                <td>{{ property.address2 }}</td>
+                <td>{{ property.city }}</td>
+                <td>{{ property.state }}</td>
+                <td>{{ property.country }}</td>
+                <td>{{ property.zip_code }}</td>
+                <td>{{ property.municipality_number }}</td>
+                <td>{{ property.electricity_bill_number }}</td>
+                <td>{{ property.water_bill_number }}</td>
+                <td>{{ property.ownership_type }}</td>
+                <td>{{ property.furnishing_status }}</td>
+                <td>{{ property.land_area }}</td>
+                <td>{{ property.carpet_area }}</td>
+                <td>{{ property.builtup_area }}</td>
+                <td>{{ property.bedrooms }}</td>
+                <td>{{ property.bathrooms }}</td>
+                <td>{{ property.washrooms }}</td>
+                <td>{{ property.facing }}</td>
+                <td>{{ property.car_parkings }}</td>
+                <td>{{ property.servant_rooms }}</td>
+                <td>{{ property.balconies }}</td>
+                <td>{{ property.has_dishwasher }}</td>
+                <td>{{ property.has_washing_machine }}</td>
+                <td>{{ property.property_value }}</td>
+                <td>{{ property.year_of_construction }}</td>
+                <td>{{ property.second_owner_code }}</td>
+                <td>{{ property.expected_rent_value }}</td>
+                <td>{{ property.status }}</td>
+                <td>{{ property.mtd_income }}</td>
+                <td>{{ property.ytd_income }}</td>
+                <td>{{ property.mtd_expense }}</td>
+                <td>{{ property.ytd_expense }}</td>
+                <td>{{ property.purchase_value }}</td>
+                <td>{{ property.construction_cost }}</td>
+                <td>{{ property.renovation_cost }}</td>
+                <td>{{ property.registration }}</td>
+                <td>{{ property.transfer_fees }}</td>
+                <td>{{ property.misc_expense }}</td>
+                <td>{{ property.created_by }}</td>
+                <td>{{ property.creation_date }}</td>
+                <td>
+                    {% if property.property_photo %}
+                        <img src="data:image/jpeg;base64,{{ property.property_photo }}" class="photo-img">
+                    {% else %}
+                        No Photo
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
+
+<!-- ---------- SORTING SCRIPT ---------- -->
+<script>
+function sortTable(n) {
+    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    table = document.getElementById("propertyTable");
+    switching = true;
+    dir = "asc";
+
+    while (switching) {
+        switching = false;
+        rows = table.rows;
+
+        for (i = 1; i < (rows.length - 1); i++) {
+            shouldSwitch = false;
+            x = rows[i].getElementsByTagName("TD")[n];
+            y = rows[i + 1].getElementsByTagName("TD")[n];
+
+            let xContent = x.textContent || x.innerText;
+            let yContent = y.textContent || y.innerText;
+
+            let xNum = parseFloat(xContent.replace(/[^0-9.-]+/g,""));
+            let yNum = parseFloat(yContent.replace(/[^0-9.-]+/g,""));
+
+            if (!isNaN(xNum) && !isNaN(yNum)) {
+                xContent = xNum;
+                yContent = yNum;
+            }
+
+            if (dir == "asc") {
+                if (xContent > yContent) { shouldSwitch = true; break; }
+            } else if (dir == "desc") {
+                if (xContent < yContent) { shouldSwitch = true; break; }
+            }
+        }
+        if (shouldSwitch) {
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+            switchcount++;
+        } else {
+            if (switchcount == 0 && dir == "asc") {
+                dir = "desc";
+                switching = true;
+            }
+        }
+    }
+}
+</script>
+
+</body>
+</html>

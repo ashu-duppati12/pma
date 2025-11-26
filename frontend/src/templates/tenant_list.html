@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tenant List</title>
+<style>
+body { 
+    font-family: Arial, sans-serif; 
+    background: #f0f2f5;  /* Light gray background for entire page */
+    margin:0; 
+    padding:0; 
+}
+h2 { 
+    text-align: center; 
+    background: #2f3640; /* Dark header */
+    color: white; 
+    padding: 15px 0; 
+    margin: 0; 
+    font-size: 24px; 
+    border-radius: 8px 8px 0 0; /* Rounded top corners */
+}
+.container { 
+    background: white; /* Table background */
+    width: 98%; 
+    max-width: 1500px; 
+    margin: 20px auto; 
+    padding: 20px; 
+    border-radius: 10px; 
+    box-shadow: 0 0 15px rgba(0,0,0,0.2); 
+    overflow-x: auto; /* allow horizontal scroll if table is wide */
+}
+.header { 
+    display: flex; 
+    justify-content: space-between; 
+    margin-bottom: 15px; 
+}
+.header-left span { 
+    font-weight: bold; 
+    margin-right: 10px; 
+}
+table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    background: #ffffff; /* full table background */
+}
+th, td { 
+    padding: 8px; 
+    border: 1px solid #ccc; 
+    text-align: center; 
+    font-size: 12px; 
+}
+th { 
+    background: #273c75; 
+    color: white; 
+    cursor: pointer; 
+    position: relative; 
+}
+th span { 
+    margin-left: 5px; 
+    font-size: 10px; 
+}
+tr:nth-child(even) { 
+    background: #f2f2f2; /* alternating row background */
+}
+tr:nth-child(odd) {
+    background: #ffffff; /* alternate white */
+}
+img { 
+    width: 60px; 
+    height: 60px; 
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+}
+.back-link { 
+    text-decoration:none; 
+    font-weight:bold; 
+    color:#333; 
+}
+</style>
+</head>
+<body>
+<h2>Tenant List</h2>
+<div class="container">
+    <div class="header">
+        <div class="header-left">
+            <span>{{ current_date }}</span> | 
+            <span>Total Tenants: {{ tenants|length }}</span>
+        </div>
+        <div class="header-right">
+            <a href="{{ url_for('home') }}">← Go Back Home</a>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>TenancyContractNumber</th>
+                <th>PropertyCode</th>
+                <th>TenantName</th>
+                <th>TenantDOB</th>
+                <th>TenantNationality</th>
+                <th>TenantPassportNumber</th>
+                <th>TenantEmiratesID</th>
+                <th>TenantPassportExpiryDate</th>
+                <th>TenantEIDExpiryDate</th>
+                <th>TenantEmployer</th>
+                <th>TenantMobileNumber</th>
+                <th>TenantEmailID</th>
+                <th>LeaseStartDate</th>
+                <th>LeaseEndDate</th>
+                <th>MoveInDate</th>
+                <th>MoveOutDate</th>
+                <th>RentAmount</th>
+                <th>DepositAmountReceived</th>
+                <th>NumberOfPayments</th>
+                <th>PassportCopy</th>
+                <th>EIDCopy</th>
+                <th>ResidenceVisa</th>
+                <th>BankStatement</th>
+                <th>DepositCheque</th>
+                <th>SecurityCheque</th>
+                <th>Ejari/Registration</th>
+                <th>CreatedBy</th>
+                <th>CreationDate</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for t in tenants %}
+            <tr>
+                <td>{{ t.TenancyContractNumber }}</td>
+                <td>{{ t.PropertyCode }}</td>
+                <td>{{ t.TenantName }}</td>
+                <td>{{ t.TenantDOB }}</td>
+                <td>{{ t.TenantNationality }}</td>
+                <td>{{ t.TenantPassportNumber }}</td>
+                <td>{{ t.TenantEmiratesID }}</td>
+                <td>{{ t.TenantPassportExpiryDate }}</td>
+                <td>{{ t.TenantEIDExpiryDate }}</td>
+                <td>{{ t.TenantEmployer }}</td>
+                <td>{{ t.TenantMobileNumber }}</td>
+                <td>{{ t.TenantEmailID }}</td>
+                <td>{{ t.LeaseStartDate }}</td>
+                <td>{{ t.LeaseEndDate }}</td>
+                <td>{{ t.MoveInDate }}</td>
+                <td>{{ t.MoveOutDate }}</td>
+                <td>{{ t.RentAmount }}</td>
+                <td>{{ t.DepositAmountReceived }}</td>
+                <td>{{ t.NumberOfPayments }}</td>
+<td>{% if t.PassportCopyPath %}
+    <img src="{{ url_for('tenant_image', tenant_id=t.TenancyContractNumber, file_type='PassportCopyPath') }}" width="60" height="60">
+{% endif %}</td>
+
+<td>{% if t.EIDCopyPath %}
+    <img src="{{ url_for('tenant_image', tenant_id=t.TenancyContractNumber, file_type='EIDCopyPath') }}" width="60" height="60">
+{% endif %}</td>
+
+<td>{% if t.ResidenceVisaCopyPath %}
+    <img src="{{ url_for('tenant_image', tenant_id=t.TenancyContractNumber, file_type='ResidenceVisaCopyPath') }}" width="60" height="60">
+{% endif %}</td>
+
+<td>{% if t.BankStatementCopyPath %}
+    <img src="{{ url_for('tenant_image', tenant_id=t.TenancyContractNumber, file_type='BankStatementCopyPath') }}" width="60" height="60">
+{% endif %}</td>
+
+<td>{% if t.DepositChequeCopyPath %}
+    <img src="{{ url_for('tenant_image', tenant_id=t.TenancyContractNumber, file_type='DepositChequeCopyPath') }}" width="60" height="60">
+{% endif %}</td>
+
+<td>{% if t.SecurityChequeCopyPath %}
+    <img src="{{ url_for('tenant_image', tenant_id=t.TenancyContractNumber, file_type='SecurityChequeCopyPath') }}" width="60" height="60">
+{% endif %}</td>
+
+<td>{% if t.EjariMunicipalRegistrationCopyPath %}
+    <img src="{{ url_for('tenant_image', tenant_id=t.TenancyContractNumber, file_type='EjariMunicipalRegistrationCopyPath') }}" width="60" height="60">
+{% endif %}</td>
+                <td>{{ t.CreatedBy }}</td>
+                <td>{{ t.CreationDate }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
+
+    const comparer = (idx, asc) => (a, b) => ((v1, v2) => 
+        !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.toString().localeCompare(v2)
+    )(getCellValue(asc ? a : b, idx), getCellValue(asc ? b : a, idx));
+
+    document.querySelectorAll("th").forEach(th => th.addEventListener("click", (() => {
+        const table = th.closest("table");
+        Array.from(table.querySelectorAll("tbody tr"))
+            .sort(comparer(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
+            .forEach(tr => table.querySelector("tbody").appendChild(tr));
+    })));
+});
+</script>
+
+</body>
+</html>

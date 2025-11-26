@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>List of Owners</title>
+<style>
+body { font-family: Arial, sans-serif; background:gray; margin:0; padding:0; }
+h2 { text-align:center; margin-bottom:0px;  }
+table { width:100%; border-collapse:collapse; background:white; border-radius:8px; overflow:hidden; }
+th, td { padding:10px 12px; border-bottom:1px solid #ddd; text-align:left; font-size:0.9rem; }
+th { background:#007BFF; color:white; cursor:pointer; }
+tr:nth-child(even) { background:#f2f2f2; }
+a { color:white; text-decoration:none; }
+a:hover { text-decoration:underline; }
+.container { max-width: 1600px; margin:auto; overflow-x:auto; }
+.back-link { display:block; margin:20px 0; text-align:center; color:#333; text-decoration:none; font-weight:bold; }
+.back-link:hover { text-decoration:underline; }
+tr:hover { background-color: #e9f5ff; }
+td img { width: 30px; height: 30px; object-fit: cover; border-radius: 4px; border: 1px solid #ccc; }
+
+.header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; flex-wrap: wrap; }
+.header-left { display: flex; gap: 10px; font-weight: bold; }
+.header-row h2 { margin: 0 auto; text-align: center; color: black; }
+.header-right { font-weight: bold; }
+.header-right .back-link { text-decoration: none; color: #333; }
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header-row">
+    <div class="header-left">
+        <span>{{ current_date }}</span> | 
+        <span>Total Owners: {{ owners|length }}</span>
+    </div>
+    <h2>List of Owners</h2>
+    <div class="header-right">
+        <a href="{{ url_for('home') }}" class="back-link">← Go Back Home</a>
+    </div>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            {% if owners|length > 0 %}
+                {% for col in owners[0].keys() %}
+                    {% if col in ['eid_image', 'passport_copy', 'res_visa'] %}
+                        <th>{{ col }}</th>
+                    {% else %}
+                        <th><a href="{{ url_for('list_owners', sort=col, order=next_order) }}">
+                            {{ col }} {% if sort_field==col %}({{ sort_order }}){% endif %}
+                        </a></th>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for owner in owners %}
+        <tr>
+            {% for key, val in owner.items() %}
+                {% if key=='eid_image' %}
+                    <td>
+                        {% if val %}
+                            <img src="{{ url_for('owner_image', owner_id=owner.owner_code, file_type='eid') }}">
+                        {% else %}N/A{% endif %}
+                    </td>
+                {% elif key=='passport_copy' %}
+                    <td>
+                        {% if val %}
+                            <img src="{{ url_for('owner_image', owner_id=owner.owner_code, file_type='passport') }}">
+                        {% else %}N/A{% endif %}
+                    </td>
+                {% elif key=='res_visa' %}
+                    <td>
+                        {% if val %}
+                            <img src="{{ url_for('owner_image', owner_id=owner.owner_code, file_type='visa') }}">
+                        {% else %}N/A{% endif %}
+                    </td>
+                {% else %}
+                    <td>{{ val }}</td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+</body>
+</html>

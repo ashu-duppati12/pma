@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Delete Owner</title>
+<style>
+body { font-family: Arial, sans-serif; background: #f0f2f5; margin:0; padding:20px; }
+.container { max-width: 1200px; margin:auto; background:white; padding:20px; border-radius:8px; box-shadow:0 0 10px rgba(0,0,0,0.1); }
+h2 { text-align:center; color:black; margin-bottom:20px; }
+.row { display:flex; flex-wrap:wrap; margin-bottom:15px; }
+.col-md-3 { width:25%; padding:0 10px; box-sizing:border-box; margin-bottom:15px; }
+label { display:block; margin-bottom:5px; font-weight:bold; font-size:0.9rem; }
+input[type=text], input[type=date], input[type=email], input[type=tel] {
+    width:100%; padding:8px; border:1px solid #ccc; border-radius:4px; font-size:0.9rem;
+}
+input.small-input { width:120px; padding:6px; font-size:0.85rem; margin-right:5px; }
+button { background:#c0392b; color:white; padding:8px 16px; border:none; border-radius:4px; cursor:pointer; font-size:0.85rem; margin-top:10px; }
+button:hover { background:#e74c3c; }
+.message { text-align:center; font-weight:bold; margin-bottom:15px; color:green; }
+.details { background:#f9f9f9; padding:15px; border-radius:5px; margin-bottom:20px; }
+img { display:block; margin-top:5px; max-width:100px; max-height:80px; border:1px solid #ccc; border-radius:4px; }
+</style>
+<script>
+function confirmDelete() { return confirm("Are you sure you want to delete this owner?"); }
+</script>
+</head>
+<body>
+<div class="container">
+<h2>Delete Owner</h2>
+
+{% if message %}
+    <p class="message">{{ message }}</p>
+{% endif %}
+
+<!-- Search Owner -->
+<form method="POST" action="{{ url_for('delete_owner') }}" style="text-align:center; margin-bottom:20px;">
+    <label for="owner_code">Enter Owner Code:</label>
+    <input type="text" name="owner_code" id="owner_code" class="small-input" placeholder="Owner Code" required>
+    <button type="submit" name="action" value="search">Search</button>
+</form>
+
+<a href="{{ url_for('home') }}" style="display:block; text-align:center; margin-bottom:20px; color:#333; font-weight:bold; text-decoration:none;">← Go Back Home</a>
+
+{% if selected_owner %}
+<form method="POST" action="{{ url_for('delete_owner') }}" onsubmit="return confirmDelete();">
+<input type="hidden" name="owner_code" value="{{ selected_owner.owner_code }}">
+
+<div class="row">
+    <div class="col-md-3"><label>Salutation</label><input type="text" value="{{ selected_owner.salutation }}" readonly></div>
+    <div class="col-md-3"><label>First Name</label><input type="text" value="{{ selected_owner.first_name }}" readonly></div>
+    <div class="col-md-3"><label>Last Name</label><input type="text" value="{{ selected_owner.last_name }}" readonly></div>
+    <div class="col-md-3"><label>Nationality</label><input type="text" value="{{ selected_owner.nationality }}" readonly></div>
+</div>
+
+<div class="row">
+    <div class="col-md-3"><label>Address 1</label><input type="text" value="{{ selected_owner.address1 }}" readonly></div>
+    <div class="col-md-3"><label>Address 2</label><input type="text" value="{{ selected_owner.address2 }}" readonly></div>
+    <div class="col-md-3"><label>City</label><input type="text" value="{{ selected_owner.city }}" readonly></div>
+    <div class="col-md-3"><label>State</label><input type="text" value="{{ selected_owner.state }}" readonly></div>
+</div>
+
+<div class="row">
+    <div class="col-md-3"><label>Country</label><input type="text" value="{{ selected_owner.country }}" readonly></div>
+    <div class="col-md-3"><label>Zip Code</label><input type="text" value="{{ selected_owner.zip_code }}" readonly></div>
+    <div class="col-md-3"><label>Mobile Number</label><input type="text" value="{{ selected_owner.mobile_number }}" readonly></div>
+    <div class="col-md-3"><label>Email</label><input type="text" value="{{ selected_owner.email }}" readonly></div>
+</div>
+
+<div class="row">
+    <div class="col-md-3"><label>Passport Number</label><input type="text" value="{{ selected_owner.passport_number }}" readonly></div>
+    <div class="col-md-3"><label>Emirates ID</label><input type="text" value="{{ selected_owner.emirates_id }}" readonly></div>
+    <div class="col-md-3"><label>Date of Birth</label><input type="date" value="{{ selected_owner.date_of_birth }}" readonly></div>
+    <div class="col-md-3"><label>Visa Expiry</label><input type="date" value="{{ selected_owner.visa_expiry_date }}" readonly></div>
+</div>
+
+<div class="row">
+    <div class="col-md-3"><label>Passport Expiry</label><input type="date" value="{{ selected_owner.passport_expiry_date }}" readonly></div>
+    <div class="col-md-3"><label>Emirates ID File</label>
+        {% if selected_owner.eid_image %}<img src="{{ url_for('owner_image', owner_id=selected_owner.owner_code, file_type='eid') }}">{% endif %}
+    </div>
+    <div class="col-md-3"><label>Passport Copy File</label>
+        {% if selected_owner.passport_copy %}<img src="{{ url_for('owner_image', owner_id=selected_owner.owner_code, file_type='passport') }}">{% endif %}
+    </div>
+    <div class="col-md-3"><label>Residence Visa File</label>
+        {% if selected_owner.res_visa %}<img src="{{ url_for('owner_image', owner_id=selected_owner.owner_code, file_type='visa') }}">{% endif %}
+    </div>
+</div>
+
+<div style="text-align:center;">
+    <button type="submit" name="action" value="delete">Delete Owner</button>
+</div>
+</form>
+{% endif %}
+</div>
+</body>
+</html>
